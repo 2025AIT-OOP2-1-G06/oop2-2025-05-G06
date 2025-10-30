@@ -20,7 +20,9 @@ class MyVideoCapture:
             PCによってはカメラIDが0ではなく1で動作する場合があるため、
             必要に応じて cv2.VideoCapture(1) に変更すること。
         """
-        self.cap: cv2.VideoCapture = cv2.VideoCapture(0)
+
+        """ lecturte05_camera_image_capture.pyの self.cap: cv2.VideoCapture = cv2.VideoCapture(1)を0では動かなかったので1に変えてあります。そのほかのところは変えていません。"""
+        self.cap: cv2.VideoCapture = cv2.VideoCapture(1)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         self.captured_img: np.ndarray | None = None
