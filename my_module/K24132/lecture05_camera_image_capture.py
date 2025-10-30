@@ -20,12 +20,13 @@ class MyVideoCapture:
     DELAY: int = 100
     HEIGHT: int = 480
     WIDTH: int = 640
-    frame: np.ndarray | None = None
+
 
     def __init__(self) -> None:
         self.cap = cv2.VideoCapture(0)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.HEIGHT)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.WIDTH)
+        self.frame: np.ndarray | None = None
 
     def run(self) -> None:
         # NOTE: カメラの自動露出の調整のために数フレーム読み飛ばす
