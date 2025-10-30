@@ -20,7 +20,7 @@ def lecture05_01() -> None:
     c = Shape(*frame.shape)
 
     # NOTE: ローテーションする等差数列を作成
-    # [0, 1, 2, ..., c_height, 0, 1, 2, ...]
+    # [0, 1, 2, ..., c_height-1, 0, 1, 2, ...]
     y_indices = np.arange(g.height) % c.height
     x_indices = np.arange(g.width) % c.width
 
