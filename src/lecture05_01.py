@@ -1,31 +1,35 @@
-import numpy as np
+from typing import Final
+
 import cv2
-from my_module.K21999.lecture05_camera_image_capture import MyVideoCapture
+import numpy as np
 
-def lecture05_01():
+from my_module.K24132.lecture05_camera_image_capture import BGR, MyVideoCapture, Shape
 
-    # カメラキャプチャ実行
+
+def lecture05_01() -> None:
     app = MyVideoCapture()
     app.run()
 
-    # 画像をローカル変数に保存
-    google_img : cv2.Mat = cv2.imread('images/google.png')
-    capture_img : cv2.Mat = cv2.imread('images/camera_capture.png') # 動作テスト用なので提出時にこの行を消すこと
-    # capture_img : cv2.Mat = "implement me"
+    frame = app.get_frame()
+    google_img = cv2.imread("images/google.png")
 
-    g_hight, g_width, g_channel = google_img.shape
-    c_hight, c_width, c_channel = capture_img.shape
-    print(google_img.shape)
-    print(capture_img.shape)
+    if google_img is None:
+        raise ValueError("Googleロゴ画像を読み込めませんでした。パスを確認してください。")
 
-    for x in range(g_width):
-        for y in range(g_hight):
-            g, b, r = google_img[y, x]
-            # もし白色(255,255,255)だったら置き換える
-            if (b, g, r) == (255, 255, 255):
-                pass
-                #implement me
+    g = Shape(*google_img.shape)
+    c = Shape(*frame.shape)
 
-    # 書き込み処理
-    # implement me
+    # NOTE: ローテーションする等差数列を作成
+    # [0, 1, 2, ..., c_height, 0, 1, 2, ...]
+    y_indices = np.arange(g.height) % c.height
+    x_indices = np.arange(g.width) % c.width
 
+    white: Final = BGR(255, 255, 255)
+
+    for x in range(g.width):
+        for y in range(g.height):
+            color = BGR(*google_img[y, x])
+            if color == white:
+                google_img[y, x] = frame[y_indices[y], x_indices[x]]
+
+    cv2.imwrite("output_images/lecture05_01_output.png", google_img)
